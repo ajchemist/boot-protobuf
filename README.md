@@ -5,7 +5,7 @@ Boot tasks for fetching google protobuf protoc binary and compiling proto file.
 ## Current version:
 [](dependency)
 ```clojure
-[boot-protobuf "0.1.0"] ;; latest release
+[boot-protobuf "0.1.1"] ;; latest release
 ```
 [](/dependency)
 
