@@ -1,9 +1,9 @@
 (set-env!
  :resource-paths #{"src"}
  :dependencies '[[org.clojure/clojure "1.8.0" :scope "provided"]
+                 [me.raynes/fs "1.4.6"]
+                 [me.raynes/conch "0.8.0"]
 
-                 [me.raynes/fs "1.4.6" :scope "test"]
-                 [me.raynes/conch "0.8.0" :scope "test"]
                  [boot/core "2.5.5" :scope "test"]
                  [adzerk/bootlaces "0.1.13" :scope "test"]])
 
