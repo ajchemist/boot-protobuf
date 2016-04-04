@@ -63,21 +63,20 @@
 (defn compile-protobuf
   [langs dest proto]
   (let [protoc (fetch-protoc-bin)
-        proto  (jio/file proto)
+        proto  (.getCanonicalFile (jio/file proto))
         langs  (map keyword langs)
         args   (transient [])]
     (when (some #{:java} langs)
-      (util/info "compile %s to java output...\n" (.getName proto))
       (conj! args (str "--java_out=" (.getPath dest))))
     (when (some #{:cpp} langs)
-      (util/info "compile %s to cpp output...\n" (.getName proto))
       (conj! args (str "--cpp_out=" (.getPath dest))))
     (when (some #{:python} langs)
-      (util/info "compile %s to python output...\n" (.getName proto))
       (conj! args (str "--python_out=" (.getPath dest))))
     (conj! args (str "-I" (.getPath (file/parent proto))))
     (conj! args (.getPath proto))
-    (let [proc (apply sh/proc (.getPath protoc) (persistent! args))]
+    (let [args (persistent! args)
+          _    (util/info "%s \\\n\t%s\n" (.getPath protoc) (string/join " \\\n\t" args))
+          proc (apply sh/proc (.getPath protoc) args)]
       (when-not (= (sh/exit-code proc) 0)
         (util/info (sh/stream-to-string proc :err))
         (util/info (sh/stream-to-string proc :out))))))
