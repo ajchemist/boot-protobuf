@@ -1,5 +1,8 @@
 #+TITLE: boot-protobuf
 
+[[https://clojars.org/boot-protobuf][https://img.shields.io/clojars/v/boot-protobuf.svg]]
+[[https://jarkeeper.com/ajchemist/boot-protobuf][https://jarkeeper.com/ajchemist/boot-protobuf/downloads.svg]]
+
 Boot tasks for fetching google protobuf protoc binary and compiling proto file.
 
 ** Dependencies
