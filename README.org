@@ -1,0 +1,29 @@
+#+TITLE: boot-protobuf
+
+Boot tasks for fetching google protobuf protoc binary and compiling proto file.
+
+** Dependencies
+
+#+begin_src clojure
+  [boot-protobuf "0.1.2"] ;; latest release
+#+end_src
+
+** Usage
+
+#+begin_src clojure
+  (require '[boot-protobuf :refer [compile-protobuf-java]])
+#+end_src
+
+=compile-protobuf-java= task do following jobs.
+
+1. Fetch google protobuf protoc(protobuf compiler) binary files.
+2. Caching protoc binary file for next trampoline.
+3. Execute protoc for compiling `*.proto` file to java.
+4. `add-resource` above generated java source file.
+
+#+begin_src clojure
+  (boot
+   (compile-protobuf-java :proto "message.proto")
+   (javac :options ["-Xlint:none"])
+   (sift :include #{#".*/.*.java$"} :invert true))
+#+end_src
