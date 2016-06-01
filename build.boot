@@ -4,12 +4,12 @@
                  [me.raynes/fs "1.4.6"]
                  [me.raynes/conch "0.8.0"]
 
-                 [boot/core "2.5.5" :scope "test"]
+                 [boot/core "2.6.0" :scope "test"]
                  [adzerk/bootlaces "0.1.13" :scope "test"]])
 
 (require '[adzerk.bootlaces :refer :all])
 
-(def +version+ "0.1.1")
+(def +version+ "0.1.2")
 
 (task-options!
  pom {:project 'boot-protobuf
