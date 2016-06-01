@@ -1,7 +1,7 @@
 (ns boot-protobuf
   (:require
    [boot
-    [core :as boot :refer [deftask tmp-dir!]]
+    [core :as boot :refer [deftask tmp-dir! with-pre-wrap]]
     [util :as util]
     [file :as file]]
    [clojure.string :as string]
@@ -60,7 +60,7 @@
 ;; "https://github.com/google/protobuf/releases/download/v3.0.0-beta-2/protoc-3.0.0-beta-2-linux-x86_64.zip"
 ;; "https://github.com/google/protobuf/releases/download/v3.0.0-beta-2/protoc-3.0.0-beta-2-win32.zip"
 
-(defn compile-protobuf
+(defn -compile-protobuf
   [langs dest proto]
   (let [protoc (fetch-protoc-bin)
         proto  (.getCanonicalFile (jio/file proto))
@@ -81,9 +81,14 @@
         (util/info (sh/stream-to-string proc :err))
         (util/info (sh/stream-to-string proc :out))))))
 
+(deftask compile-protobuf
+  [l langs LANG #{kw} "langs"
+   p proto FILE  str  ".proto file"]
+  (with-pre-wrap fileset
+    (let [dest (tmp-dir!)]
+      (-compile-protobuf langs dest proto)
+      (-> fileset (boot/add-resource dest) boot/commit!))))
+
 (deftask compile-protobuf-java
   [p proto FILE str]
-  (boot/with-pre-wrap fileset
-    (let [dest (tmp-dir!)]
-      (compile-protobuf #{:java} dest proto)
-      (-> fileset (boot/add-resource dest) boot/commit!))))
+  (compile-protobuf :langs #{:java} :proto proto))
