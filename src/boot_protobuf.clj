@@ -10,7 +10,7 @@
    [me.raynes.fs.compression :as fs-compression]
    [me.raynes.conch.low-level :as sh]))
 
-(def version (or (boot/get-env :protobuf-version) "3.0.0-beta-3"))
+(def version (or (boot/get-env :protobuf-version) "3.0.0-beta-4"))
 
 (def platform
   (let [osname (System/getProperty "os.name")
