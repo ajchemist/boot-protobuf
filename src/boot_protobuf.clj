@@ -10,7 +10,7 @@
    [me.raynes.fs.compression :as fs-compression]
    [me.raynes.conch.low-level :as sh]))
 
-(def version (or (boot/get-env :protobuf-version) "3.0.0-beta-3"))
+(def version (or (boot/get-env :protobuf-version) "3.0.0-beta-4"))
 
 (def platform
   (let [osname (System/getProperty "os.name")
@@ -32,8 +32,16 @@
            version
            (case platform :mac "osx-x86_64"))))
 
-(defn protoc-bin-dir []
+(defn protoc-unzip-dir []
   (jio/file protoc-cache-dir (fs/base-name (protoc-bin-zipfile) ".zip")))
+
+(defn protoc-bin-dir []
+  "Looks up the protoc binary folder. From protoc-3.0.0-beta-4 on, the protoc binary resides in bin/"
+  (let [unzip-dir (protoc-unzip-dir)
+        protoc-bin-dir (jio/file unzip-dir "bin")]
+    (if (.exists protoc-bin-dir)
+      protoc-bin-dir
+      unzip-dir)))
 
 (defn protoc-bin-url []
   (java.net.URL.
@@ -45,7 +53,7 @@
 (defn fetch-protoc-bin []
   (let [zipfile    (protoc-bin-zipfile)
         cachedir   protoc-cache-dir
-        extractdir (protoc-bin-dir)
+        extractdir (protoc-unzip-dir)
         protoc     (jio/file (protoc-bin-dir) "protoc")]
     (when-not (.exists zipfile)
       (.mkdirs cachedir)
