@@ -8,7 +8,7 @@ Boot tasks for fetching google protobuf protoc binary and compiling proto file.
 ** Dependencies
 
 #+begin_src clojure
-  [boot-protobuf "0.1.2"] ;; latest release
+  [boot-protobuf "0.1.4"] ;; latest release
 #+end_src
 
 ** Usage
