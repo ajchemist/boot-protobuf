@@ -28,18 +28,19 @@
 (defn protoc-bin-zipfile []
   (jio/file
    protoc-cache-dir
-   (format "protoc-%s-%s.zip"
-           version
-           (case platform :mac "osx-x86_64"))))
+   (format
+    "protoc-%s-%s.zip" version
+    (case platform
+      :mac "osx-x86_64"))))
 
 (defn protoc-unzip-dir []
   (jio/file protoc-cache-dir (fs/base-name (protoc-bin-zipfile) ".zip")))
 
 (defn protoc-bin-dir []
   "Looks up the protoc binary folder. From protoc-3.0.0-beta-4 on, the protoc binary resides in bin/"
-  (let [unzip-dir (protoc-unzip-dir)
+  (let [unzip-dir      (protoc-unzip-dir)
         protoc-bin-dir (jio/file unzip-dir "bin")]
-    (if (.exists protoc-bin-dir)
+    (if (file/dir? protoc-bin-dir)
       protoc-bin-dir
       unzip-dir)))
 
@@ -51,19 +52,20 @@
     (.getName (protoc-bin-zipfile)))))
 
 (defn fetch-protoc-bin []
-  (let [zipfile    (protoc-bin-zipfile)
-        cachedir   protoc-cache-dir
-        extractdir (protoc-unzip-dir)
-        protoc     (jio/file (protoc-bin-dir) "protoc")]
-    (when-not (.exists zipfile)
+  (let [cachedir   protoc-cache-dir
+        zipfile    (protoc-bin-zipfile)
+        extractdir (protoc-unzip-dir)]
+    (when-not (file/file? zipfile)
       (.mkdirs cachedir)
-      (util/info (format "Downloading %s to %s" (.getName zipfile) zipfile))
+      (util/info (format "Downloading %s to %s\n" (.getName zipfile) zipfile))
       (with-open [stream (.openStream (protoc-bin-url))]
         (jio/copy stream zipfile)))
-    (when-not (.exists extractdir)
+    (when-not (file/dir? extractdir)
       (util/info (format "Unzipping %s to %s" zipfile extractdir))
       (fs-compression/unzip zipfile extractdir))
-    (fs/chmod "+x" protoc)))
+    (when (file/dir? extractdir)
+      (let [protoc (jio/file (protoc-bin-dir) "protoc")]
+        (fs/chmod "+x" protoc)))))
 
 ;; "https://github.com/google/protobuf/releases/download/v3.0.0-beta-2/protoc-3.0.0-beta-2-linux-x86_64.zip"
 ;; "https://github.com/google/protobuf/releases/download/v3.0.0-beta-2/protoc-3.0.0-beta-2-win32.zip"

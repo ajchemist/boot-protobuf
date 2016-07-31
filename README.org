@@ -28,5 +28,6 @@ Boot tasks for fetching google protobuf protoc binary and compiling proto file.
   (boot
    (compile-protobuf-java :proto "message.proto")
    (javac :options ["-Xlint:none"])
-   (sift :include #{#".*/.*.java$"} :invert true))
+   (sift :include #{#".*/.*.java$"} :invert true) ; optional
+   )
 #+end_src
