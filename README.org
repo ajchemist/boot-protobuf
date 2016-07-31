@@ -5,15 +5,14 @@
 
 Boot tasks for fetching google protobuf protoc binary and compiling proto file.
 
-** Dependencies
-
-#+begin_src clojure
-  [boot-protobuf "0.1.5"] ;; latest release
-#+end_src
-
 ** Usage
 
 #+begin_src clojure
+  (set-env!
+   :dependencies
+   '[[com.google.protobuf/protobuf-java "3.0.0"] ;; needed to compile .proto to java
+     [boot-protobuf "0.1.5"]])
+
   (require '[boot-protobuf :refer [compile-protobuf-java]])
 #+end_src
 
