@@ -31,7 +31,9 @@
    (format
     "protoc-%s-%s.zip" version
     (case platform
-      :mac "osx-x86_64"))))
+      :win   "win32"
+      :mac   "osx-x86_64"
+      :linux "linux-x86_64"))))
 
 (defn protoc-unzip-dir []
   (jio/file protoc-cache-dir (fs/base-name (protoc-bin-zipfile) ".zip")))
