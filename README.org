@@ -2,6 +2,7 @@
 
 [[https://clojars.org/boot-protobuf][https://img.shields.io/clojars/v/boot-protobuf.svg]]
 [[https://jarkeeper.com/ajchemist/boot-protobuf][https://jarkeeper.com/ajchemist/boot-protobuf/downloads.svg]]
+[[https://travis-ci.org/aJchemist/boot-protobuf.svg?branch=master]]
 
 Boot tasks for fetching google protobuf protoc binary and compiling proto file.
 
@@ -10,8 +11,8 @@ Boot tasks for fetching google protobuf protoc binary and compiling proto file.
 #+begin_src clojure
   (set-env!
    :dependencies
-   '[[com.google.protobuf/protobuf-java "3.0.0"] ;; needed to compile .proto to java
-     [boot-protobuf "0.1.5"]])
+   '[[com.google.protobuf/protobuf-java "3.0.2"] ;; needed to compile *.java
+     [boot-protobuf "0.2.0"]])
 
   (require '[boot-protobuf :refer [compile-protobuf-java]])
 #+end_src
