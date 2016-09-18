@@ -1,4 +1,5 @@
 (ns boot-protobuf
+  {:boot/export-tasks true}
   (:require
    [boot
     [core :as boot :refer [deftask tmp-dir! with-pre-wrap]]
@@ -10,7 +11,7 @@
    [me.raynes.fs.compression :as fs-compression]
    [me.raynes.conch.low-level :as sh]))
 
-(def version (or (boot/get-env :protobuf-version) "3.0.0"))
+(def version (or (boot/get-env :protobuf-version) "3.0.2"))
 
 (def platform
   (let [osname (System/getProperty "os.name")
