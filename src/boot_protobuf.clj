@@ -76,13 +76,14 @@
   [langs dest proto]
   (let [protoc (fetch-protoc-bin)
         proto  (.getCanonicalFile (jio/file proto))
-        langs  (map keyword langs)
         args   (transient [])]
-    (when (some #{:java} langs)
+    (when (contains? langs :java)
       (conj! args (str "--java_out=" (.getPath dest))))
-    (when (some #{:cpp} langs)
+    (when (contains? langs :js)
+      (conj! args (str "--js_out=" (.getPath dest))))
+    (when (contains? langs :cpp)
       (conj! args (str "--cpp_out=" (.getPath dest))))
-    (when (some #{:python} langs)
+    (when (contains? langs :python)
       (conj! args (str "--python_out=" (.getPath dest))))
     (conj! args (str "-I" (.getPath (file/parent proto))))
     (conj! args (.getPath proto))
@@ -94,8 +95,9 @@
         (util/info (sh/stream-to-string proc :out))))))
 
 (deftask compile-protobuf
-  [l langs LANG #{kw} "langs"
-   p proto FILE  str  ".proto file"]
+  "Compile proto file via protoc"
+  [l langs LANG #{kw} "output languages e.g. java, js, cpp, python"
+   p proto FILE str   "input proto file"]
   (with-pre-wrap fileset
     (let [dest (tmp-dir!)]
       (-compile-protobuf langs dest proto)
