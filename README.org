@@ -12,7 +12,7 @@ Boot tasks for fetching google protobuf protoc binary and compiling proto file.
   (set-env!
    :dependencies
    '[[com.google.protobuf/protobuf-java "3.0.2"] ;; needed to compile *.java
-     [boot-protobuf "0.2.0"]])
+     [boot-protobuf "0.2.0" :scope "test"]])
 
   (require '[boot-protobuf :refer [compile-protobuf-java]])
 #+end_src

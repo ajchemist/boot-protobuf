@@ -64,7 +64,7 @@
       (with-open [stream (.openStream (protoc-bin-url))]
         (jio/copy stream zipfile)))
     (when-not (file/dir? extractdir)
-      (util/info (format "Unzipping %s to %s" zipfile extractdir))
+      (util/info (format "Unzipping %s to %s\n" zipfile extractdir))
       (fs-compression/unzip zipfile extractdir))
     (when (file/dir? extractdir)
       (let [protoc (jio/file (protoc-bin-dir) "protoc")]
