@@ -1,6 +1,6 @@
 sudo: false
 language: java
-script: boot run-tests
+script: boot -P run-tests
 install:
   - mkdir -p ~/bin
   - export PATH=~/bin:$PATH
@@ -8,9 +8,9 @@ install:
   - chmod +x ~/bin/boot
 env:
   matrix:
-    # Runs tests twice, using Clj 1.7 and 1.8
     - BOOT_CLOJURE_VERSION=1.7.0
     - BOOT_CLOJURE_VERSION=1.8.0
+    - BOOT_CLOJURE_VERSION=1.9.0
 jdk:
   - oraclejdk8
 cache:

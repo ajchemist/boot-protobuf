@@ -12,9 +12,9 @@ Boot tasks for fetching google protobuf protoc binary and compiling proto file.
   (set-env!
    :dependencies
    '[[com.google.protobuf/protobuf-java "3.0.2"] ;; needed to compile *.java
-     [boot-protobuf "0.2.0" :scope "test"]])
+     [boot-protobuf "0.3.0" :scope "test"]])
 
-  (require '[boot-protobuf :refer [compile-protobuf-java]])
+  (require '[boot-protobuf.core :refer [compile-protobuf-java]])
 #+end_src
 
 =compile-protobuf-java= task do following jobs.
@@ -31,3 +31,9 @@ Boot tasks for fetching google protobuf protoc binary and compiling proto file.
    (sift :include #{#".*/.*.java$"} :invert true) ; optional
    )
 #+end_src
+
+** CHANGES
+
+*** 0.3.0
+
+Deprecated boot-protobuf single segment ns, use boot-protobuf.core instead.
