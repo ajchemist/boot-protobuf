@@ -1,15 +1,14 @@
 (ns boot-protobuf
-  {:boot/export-tasks true
-   :deprecated {:use 'boot-protobuf.core}}
+  {:deprecated {:use 'boot-protobuf.core}}
   (:require
    [boot.core :as boot :refer [deftask tmp-dir! with-pre-wrap]]
    [boot.util :as util]
    [boot.file :as file]
    [clojure.string :as string]
    [clojure.java.io :as jio]
+   [boot.from.me.raynes.conch :as conch]
    [me.raynes.fs :as fs]
    [me.raynes.fs.compression :as fs-compression]
-   [me.raynes.conch.low-level :as sh]
    ))
 
 (def version (or (boot/get-env :protobuf-version) "3.3.0"))
@@ -96,10 +95,10 @@
     (conj! args (.getPath proto))
     (let [args (persistent! args)
           _    (util/info "%s \\\n\t%s\n" (.getPath protoc) (string/join " \\\n\t" args))
-          proc (apply sh/proc (.getPath protoc) args)]
-      (when-not (= (sh/exit-code proc) 0)
-        (util/info (sh/stream-to-string proc :err))
-        (util/info (sh/stream-to-string proc :out))))))
+          proc (apply conch/proc (.getPath protoc) args)]
+      (when-not (= (conch/exit-code proc) 0)
+        (util/info (conch/stream-to-string proc :err))
+        (util/info (conch/stream-to-string proc :out))))))
 
 (deftask compile-protobuf
   "Compile proto file via protoc"

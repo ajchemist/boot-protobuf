@@ -1,6 +1,5 @@
 (ns boot-protobuf.core
-  {:boot/export-tasks true
-   :deprecated {:use 'boot-protobuf.core}}
+  {:boot/export-tasks true}
   (:require
    [clojure.string :as string]
    [clojure.java.io :as jio]
@@ -9,7 +8,7 @@
    [boot.file]
    [boot.from.me.raynes.conch :as conch]
    [me.raynes.fs :as fs]
-   [me.raynes.fs.compression :as fs-compression]
+   [me.raynes.fs.compression :as fs.compression]
    )
   (:import
    java.io.File
@@ -74,7 +73,7 @@
         (jio/copy stream zipfile)))
     (when-not (boot.file/dir? extractdir)
       (boot.util/info (format "Unzipping %s to %s\n" zipfile extractdir))
-      (fs-compression/unzip zipfile extractdir))
+      (fs.compression/unzip zipfile extractdir))
     (when (boot.file/dir? extractdir)
       (let [protoc (jio/file (protoc-bin-dir) "protoc")]
         (fs/chmod "+x" protoc)))))
