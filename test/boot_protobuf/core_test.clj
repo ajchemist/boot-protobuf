@@ -1,8 +1,9 @@
 (ns boot-protobuf.core-test
   (:require
    [clojure.test :as test :refer [deftest testing is are]]
-   [clojure.string :as string]
+   [clojure.java.io :as jio]
    [clojure.java.shell :as jsh]
+   [clojure.string :as string]
    [boot.core]
    [boot.task.built-in :refer :all]
    [boot-protobuf.core :refer :all]
@@ -29,16 +30,20 @@
       (is (boot.file/file? binary))))
 
   (testing "compile-protobuf"
-    (boot.core/boot
-     (compile-protobuf "-l" "java" "-p" "test/addressbook.proto" "-p" "test/api.proto")
-     (javac :options ["-Xlint:none"])))
+    (-compile-protobuf
+     #{:java} (jio/file (System/getProperty "java.io.tmpdir"))
+     ["test/addressbook.proto" "test/api.proto"]))
 
-  (testing "compile-protobuf without a proto-files arg"
-    (boot.core/boot
-     (compile-protobuf "-l" "java")
-     (javac :options ["-Xlint:none"])))
+  #_(testing "compile-protobuf without a proto-files arg"
+    (((comp
+        (compile-protobuf "-l" "java")
+        (javac :options ["-Xlint:none"]))
+      identity)
+     (boot.core/new-fileset)))
 
-  ;; (exec "boot" "-d" "boot-protobuf" "compile-protobuf-java" "-p" "test/addressbook.proto")
-
-  ;; (exec "boot" "-e" "protobuf-version=3.0.0-beta-3" "-d" "boot-protobuf" "compile-protobuf-java" "-p" "test/addressbook.proto")
+  (exec "boot" "-P" "-d" "boot-protobuf:0.3.0-SNAPSHOT"
+        "compile-protobuf"
+        "-l" "java"
+        "-p" "test/addressbook.proto"
+        "-p" "test/api.proto")
   )
