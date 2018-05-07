@@ -42,7 +42,7 @@
 
 (task-options!
  pom {:project      'boot-protobuf
-      :version      "0.3.0-SNAPSHOT"
+      :version      "0.3.0"
       :dependencies '[[me.raynes/fs "1.4.6"]]
       :description  "Boot tasks for fetching google protobuf protoc binary and compiling proto file"
       :url          "https://github.com/aJchemist/boot-protobuf"
